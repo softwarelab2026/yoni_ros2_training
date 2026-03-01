@@ -24,6 +24,8 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            'ball_tracker_node = ball_tracker.ball_tracker_node:main',
+            'virtual_camera_node = ball_tracker.virtual_camera_node:main',
         ],
     },
 )
