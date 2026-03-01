@@ -1,0 +1,23 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Launch Ball Tracker System",
+            "type": "shell",
+            "command": "source /opt/ros/humble/setup.bash && source install/setup.bash && ros2 launch ball_tracker tracker.launch.py",
+            "options": {
+                "cwd": "${workspaceFolder}/ros2_ws",
+                "shell": {
+                    "executable": "/bin/bash",
+                    "args": ["-c"]
+                }
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "clear": true
+            },
+            "problemMatcher": []
+        }
+    ]
+}
