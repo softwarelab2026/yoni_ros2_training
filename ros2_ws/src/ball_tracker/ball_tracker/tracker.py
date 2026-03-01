@@ -2,7 +2,7 @@ from rclpy.node import Node
 from sensor_msgs.msg import Image
 from geometry_msgs.msg import Twist
 
-class BallTrackers(Node):
+class BallTracker(Node):
     def __init__(self):
         super().__init__('ball_tracker_node')
 
