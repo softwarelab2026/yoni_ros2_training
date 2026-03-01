@@ -6,3 +6,7 @@ to run the turtlesim with control with keyboard:
 ros2 run turtlesim turlesim_node
 and then in new terminal:
 ros2 run turtlesim turtle_teleop_key
+
+to check the topic name for the cmd_vel you can run the sim and then open new terminal and run:
+ros2 topic list
+
