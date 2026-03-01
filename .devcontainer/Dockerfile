@@ -9,8 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-pip \
     software-properties-common \
     ros-dev-tools \
-    ros-humble-turtlesim \
-    && rm -rf /var/lib/apt/lists/*
+    ros-humble-turtlesim
 
 RUN pip install -U \
     setuptools \
