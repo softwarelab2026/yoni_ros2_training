@@ -1,3 +1,4 @@
+import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
 from geometry_msgs.msg import Twist
@@ -10,11 +11,21 @@ class BallTracker(Node):
 
         self._subcription = self.create_subscription(
             Image,
-            'camera/image_raw',
+            '/camera/image_raw',
             self._image_callback,
             10
         )
 
     def _image_callback(self, msg):
-        # ball tracking logic
+        self.get_logger().info("got an image")
         pass
+
+def main(args=None):
+    rclpy.init(args=args)
+    ball_tracker = BallTracker()
+    rclpy.spin(ball_tracker)
+    ball_tracker.destroy_node()
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
