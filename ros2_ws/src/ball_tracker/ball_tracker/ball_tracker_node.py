@@ -2,6 +2,7 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
 from geometry_msgs.msg import Twist
+from turtlesim.msg import Pose
 
 class BallTracker(Node):
     def __init__(self):
@@ -16,8 +17,23 @@ class BallTracker(Node):
             10
         )
 
+        self._pose_subscriber = self.create_subscription(
+            Pose,
+            '/turtle1/pose',
+            self._pose_callback,
+            10
+        )
+
+        self.turtle_x = 0.0
+        self.turtle_y = 0.0
+        self.turtle_theta = 0.0
+
+    def _pose_callback(self, msg):
+        self.turtle_x = msg.x
+        self.turtle_y = msg.y
+        self.turtle_theta = msg.theta
+
     def _image_callback(self, msg):
-        self.get_logger().info("got an image")
         pass
 
 def main(args=None):
