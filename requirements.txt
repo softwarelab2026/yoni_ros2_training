@@ -3,3 +3,5 @@ opencv-python
 setuptools==58.2.0
 numpy<2.0.0
 pytest
+pre-commit
+pylint
