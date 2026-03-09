@@ -1,4 +1,4 @@
-from ros2_ws.build.ball_tracker.ball_tracker.pid_controller import PIDController
+from ros2_ws.src.ball_tracker.ball_tracker.pid_controller import PIDController
 
 def test_pid_initialization():
     pid = PIDController(kp=1.0, ki=0.5, kd=0.1, max_output=5.0)
