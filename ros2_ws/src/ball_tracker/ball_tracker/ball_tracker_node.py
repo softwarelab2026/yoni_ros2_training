@@ -1,5 +1,6 @@
 import rclpy
 from rclpy.node import Node
+from ball_tracker.geometry import pixels_to_turtlesim
 from sensor_msgs.msg import Image
 from geometry_msgs.msg import Twist
 from turtlesim.msg import Pose
@@ -57,7 +58,7 @@ class BallTracker(Node):
                 self.ball_pixel_x = int(M["m10"] / M["m00"])
                 self.ball_pixel_y = int(M["m01"] / M["m00"])
 
-                self.target_x, self.target_y = self._pixels_to_turtlesim(
+                self.target_x, self.target_y = pixels_to_turtlesim(
                     self.ball_pixel_x, self.ball_pixel_y
                 )
 
