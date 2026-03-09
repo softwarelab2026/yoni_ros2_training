@@ -3,6 +3,9 @@ from rclpy.node import Node
 from sensor_msgs.msg import Image
 from geometry_msgs.msg import Twist
 from turtlesim.msg import Pose
+import cv2
+from cv_bridge import CvBridge
+import numpy as np
 
 class BallTracker(Node):
     def __init__(self):
@@ -28,13 +31,35 @@ class BallTracker(Node):
         self.turtle_y = 0.0
         self.turtle_theta = 0.0
 
+        self.bridge = CvBridge()
+        self.ball_pixel_x = 0.0
+        self.ball_pixel_y = 0.0
+
     def _pose_callback(self, msg):
         self.turtle_x = msg.x
         self.turtle_y = msg.y
         self.turtle_theta = msg.theta
 
     def _image_callback(self, msg):
-        pass
+        try:
+            cv_image = self.bridge.imgmsg_to_cv2(msg, 'bgr8')
+            
+            lower_red = np.array([0, 0, 200])
+            upper_red = np.array([50, 50, 255])
+            
+            red_mask = cv2.inRange(cv_image, lower_red, upper_red)
+            
+            M = cv2.moments(red_mask)
+            if M['m00'] > 0:
+                self.ball_pixel_x = int(M['m10'] / M['m00'])
+                self.ball_pixel_y = int(M['m01'] / M['m00'])
+                
+                self.get_logger().info(f"ן see the ball at X:{self.ball_pixel_x}, Y:{self.ball_pixel_y}!!!")
+            else:
+                self.get_logger().info("no ball in frame..")
+                
+        except Exception as e:
+            self.get_logger().error(f"Camera error: {e}")
 
 def main(args=None):
     rclpy.init(args=args)
