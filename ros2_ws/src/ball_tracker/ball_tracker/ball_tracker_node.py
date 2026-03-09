@@ -30,6 +30,14 @@ class BallTracker(Node):
         self.ball_pixel_x = 0.0
         self.ball_pixel_y = 0.0
 
+        self.target_x = 0.0
+        self.target_y = 0.0
+
+    def _pixels_to_turtlesim(self, pixel_x, pixel_y):
+        sim_x = (pixel_x / 500.0) * 11.0
+        sim_y = ((500.0 - pixel_y) / 500.0) * 11.0
+        return sim_x, sim_y
+
     def _pose_callback(self, msg):
         self.turtle_x = msg.x
         self.turtle_y = msg.y
@@ -49,8 +57,12 @@ class BallTracker(Node):
                 self.ball_pixel_x = int(M["m10"] / M["m00"])
                 self.ball_pixel_y = int(M["m01"] / M["m00"])
 
+                self.target_x, self.target_y = self._pixels_to_turtlesim(
+                    self.ball_pixel_x, self.ball_pixel_y
+                )
+
                 self.get_logger().info(
-                    f"ן see the ball at X:{self.ball_pixel_x}, Y:{self.ball_pixel_y}!!!"
+                    f"target -> X: {self.target_x:.2f}m, Y: {self.target_y:.2f}m"
                 )
             else:
                 self.get_logger().info("no ball in frame..")
