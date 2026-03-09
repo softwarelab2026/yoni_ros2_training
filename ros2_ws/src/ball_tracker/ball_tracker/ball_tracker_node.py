@@ -7,24 +7,19 @@ import cv2
 from cv_bridge import CvBridge
 import numpy as np
 
+
 class BallTracker(Node):
     def __init__(self):
-        super().__init__('ball_tracker_node')
+        super().__init__("ball_tracker_node")
 
-        self._publisher = self.create_publisher(Twist, '/turtle1/cmd_vel', 10)
+        self._publisher = self.create_publisher(Twist, "/turtle1/cmd_vel", 10)
 
         self._subcription = self.create_subscription(
-            Image,
-            '/camera/image_raw',
-            self._image_callback,
-            10
+            Image, "/camera/image_raw", self._image_callback, 10
         )
 
         self._pose_subscriber = self.create_subscription(
-            Pose,
-            '/turtle1/pose',
-            self._pose_callback,
-            10
+            Pose, "/turtle1/pose", self._pose_callback, 10
         )
 
         self.turtle_x = 0.0
@@ -42,7 +37,7 @@ class BallTracker(Node):
 
     def _image_callback(self, msg):
         try:
-            cv_image = self.bridge.imgmsg_to_cv2(msg, 'bgr8')
+            cv_image = self.bridge.imgmsg_to_cv2(msg, "bgr8")
 
             lower_red = np.array([0, 0, 200])
             upper_red = np.array([50, 50, 255])
@@ -50,16 +45,19 @@ class BallTracker(Node):
             red_mask = cv2.inRange(cv_image, lower_red, upper_red)
 
             M = cv2.moments(red_mask)
-            if M['m00'] > 0:
-                self.ball_pixel_x = int(M['m10'] / M['m00'])
-                self.ball_pixel_y = int(M['m01'] / M['m00'])
+            if M["m00"] > 0:
+                self.ball_pixel_x = int(M["m10"] / M["m00"])
+                self.ball_pixel_y = int(M["m01"] / M["m00"])
 
-                self.get_logger().info(f"ן see the ball at X:{self.ball_pixel_x}, Y:{self.ball_pixel_y}!!!")
+                self.get_logger().info(
+                    f"ן see the ball at X:{self.ball_pixel_x}, Y:{self.ball_pixel_y}!!!"
+                )
             else:
                 self.get_logger().info("no ball in frame..")
 
         except Exception as e:
             self.get_logger().error(f"Camera error: {e}")
+
 
 def main(args=None):
     rclpy.init(args=args)
@@ -68,5 +66,6 @@ def main(args=None):
     ball_tracker.destroy_node()
     rclpy.shutdown()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

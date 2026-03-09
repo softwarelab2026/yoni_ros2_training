@@ -5,11 +5,12 @@ from cv_bridge import CvBridge
 import cv2
 import numpy as np
 
+
 class VirtualCamera(Node):
     def __init__(self):
-        super().__init__('virtual_camera_node')
+        super().__init__("virtual_camera_node")
 
-        self.publisher_ = self.create_publisher(Image, '/camera/image_raw', 10)
+        self.publisher_ = self.create_publisher(Image, "/camera/image_raw", 10)
 
         self.timer = self.create_timer(0.1, self.timer_callback)
 
@@ -37,6 +38,7 @@ class VirtualCamera(Node):
         msg = self.br.cv2_to_imgmsg(frame, encoding="bgr8")
         self.publisher_.publish(msg)
 
+
 def main(args=None):
     rclpy.init(args=args)
     virtual_camera = VirtualCamera()
@@ -44,5 +46,6 @@ def main(args=None):
     virtual_camera.destroy_node()
     rclpy.shutdown()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
