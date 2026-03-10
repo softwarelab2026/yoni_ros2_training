@@ -7,6 +7,11 @@ def generate_launch_description():
         [
             Node(package="turtlesim", executable="turtlesim_node", name="sim"),
             Node(
+                package="ball_tracker",
+                executable="turtle_controller_node",
+                name="controller",
+            ),
+            Node(
                 package="ball_tracker", executable="virtual_camera_node", name="camera"
             ),
             Node(
