@@ -1,8 +1,10 @@
 import math
+
 import rclpy
+from geometry_msgs.msg import Point, Twist
 from rclpy.node import Node
-from geometry_msgs.msg import Twist, Point
 from turtlesim.msg import Pose
+
 from ball_tracker.pid_controller import PIDController
 
 
@@ -11,13 +13,9 @@ class TurtleController(Node):
         super().__init__("turtle_controller_node")
 
         self._cmd_vel_publisher = self.create_publisher(Twist, "/turtle1/cmd_vel", 10)
-        self._pose_subscriber = self.create_subscription(
-            Pose, "/turtle1/pose", self._pose_callback, 10
-        )
+        self._pose_subscriber = self.create_subscription(Pose, "/turtle1/pose", self._pose_callback, 10)
 
-        self._target_subscriber = self.create_subscription(
-            Point, "/target_point", self._target_callback, 10
-        )
+        self._target_subscriber = self.create_subscription(Point, "/target_point", self._target_callback, 10)
 
         self._linear_pid = PIDController(kp=5.0, ki=0.0, kd=0.0, max_output=10.0)
         self._angular_pid = PIDController(kp=5.0, ki=0.0, kd=0.0, max_output=10.0)
@@ -44,21 +42,15 @@ class TurtleController(Node):
 
         if distance < 0.1:
             self._cmd_vel_publisher.publish(Twist())
-            self.get_logger().info(
-                f"Target reached: X={self._target_point.x:.2f}, Y={self._target_point.y:.2f}"
-            )
+            self.get_logger().info(f"Target reached: X={self._target_point.x:.2f}, Y={self._target_point.y:.2f}")
             return
 
         angle_to_target = math.atan2(dy, dx)
         angle_error = angle_to_target - self._turtle_pose.theta
         angle_error = math.atan2(math.sin(angle_error), math.cos(angle_error))
 
-        angular_vel = self._angular_pid.compute(
-            setpoint=0.0, measured_value=-angle_error, dt=0.1
-        )
-        linear_vel = self._linear_pid.compute(
-            setpoint=0.0, measured_value=-distance, dt=0.1
-        )
+        angular_vel = self._angular_pid.compute(setpoint=0.0, measured_value=-angle_error, dt=0.1)
+        linear_vel = self._linear_pid.compute(setpoint=0.0, measured_value=-distance, dt=0.1)
 
         cmd_msg = Twist()
         cmd_msg.linear.x = linear_vel

@@ -1,11 +1,12 @@
-import rclpy
-from rclpy.node import Node
-from ball_tracker.geometry import pixels_to_turtlesim
-from sensor_msgs.msg import Image
-from geometry_msgs.msg import Point
 import cv2
-from cv_bridge import CvBridge
 import numpy as np
+import rclpy
+from cv_bridge import CvBridge
+from geometry_msgs.msg import Point
+from rclpy.node import Node
+from sensor_msgs.msg import Image
+
+from ball_tracker.geometry import pixels_to_turtlesim
 
 
 class BallTracker(Node):
@@ -14,9 +15,7 @@ class BallTracker(Node):
 
         self._target_publisher = self.create_publisher(Point, "/target_point", 10)
 
-        self._image_subscriber = self.create_subscription(
-            Image, "/camera/image_raw", self._image_callback, 10
-        )
+        self._image_subscriber = self.create_subscription(Image, "/camera/image_raw", self._image_callback, 10)
 
         self._bridge = CvBridge()
 

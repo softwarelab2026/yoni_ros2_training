@@ -1,0 +1,43 @@
+[tool.pylint.MASTER]
+ignore-paths = [
+    "ros2_ws/install/.*",
+    "ros2_ws/build/.*",
+    "ros2_ws/log/.*",
+    "ros2_ws/src/.*/launch/.*",
+]
+
+[tool.pylint."MESSAGES CONTROL"]
+disable = [
+    "missing-docstring",
+    "import-error",
+    "no-member",
+    "too-few-public-methods",
+    "too-many-instance-attributes",
+    "invalid-name",
+    "broad-exception-caught",
+    "no-name-in-module",
+]
+
+[tool.pylint.FORMAT]
+max-line-length = 120
+
+[tool.ruff]
+line-length = 120
+select = [
+    "E",
+    "W",
+    "F",
+    "I",
+    "B",
+    "C4",
+]
+ignore = ["E501"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["ball_tracker"]
+
+[tool.mypy]
+ignore_missing_imports = true
+check_untyped_defs = true
+explicit_package_bases = true
+exclude = ["ros2_ws/build/", "ros2_ws/install/", "ros2_ws/log/"]

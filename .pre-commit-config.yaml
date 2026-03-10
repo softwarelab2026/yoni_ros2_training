@@ -4,8 +4,11 @@ repos:
     hooks:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
-    -   id: check-added-large-files
     -   id: check-yaml
+    -   id: check-json
+    -   id: mixed-line-ending
+    -   id: no-commit-to-branch
+        args: [--branch, main]
 
 -   repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.3.4
@@ -13,3 +16,9 @@ repos:
     -   id: ruff
         args: [ --fix ]
     -   id: ruff-format
+
+-   repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.9.0
+    hooks:
+    -   id: mypy
+        args: ["--ignore-missing-imports", "--explicit-package-bases"]

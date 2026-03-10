@@ -11,11 +11,7 @@ def generate_launch_description():
                 executable="turtle_controller_node",
                 name="controller",
             ),
-            Node(
-                package="ball_tracker", executable="virtual_camera_node", name="camera"
-            ),
-            Node(
-                package="ball_tracker", executable="ball_tracker_node", name="tracker"
-            ),
+            Node(package="ball_tracker", executable="virtual_camera_node", name="camera"),
+            Node(package="ball_tracker", executable="ball_tracker_node", name="tracker"),
         ]
     )
