@@ -23,14 +23,14 @@ class BallTracker(Node):
             Pose, "/turtle1/pose", self._pose_callback, 10
         )
 
-        self.turtle_x = 0.0
-        self.turtle_y = 0.0
-        self.turtle_theta = 0.0
+        self._turtle_x = 0.0
+        self._turtle_y = 0.0
+        self._turtle_theta = 0.0
 
-        self.bridge = CvBridge()
+        self._bridge = CvBridge()
 
-        self.target_x = 0.0
-        self.target_y = 0.0
+        self._target_x = 0.0
+        self._target_y = 0.0
 
     def _pixels_to_turtlesim(self, pixel_x, pixel_y):
         sim_x = (pixel_x / 500.0) * 11.0
@@ -38,13 +38,13 @@ class BallTracker(Node):
         return sim_x, sim_y
 
     def _pose_callback(self, msg):
-        self.turtle_x = msg.x
-        self.turtle_y = msg.y
-        self.turtle_theta = msg.theta
+        self._turtle_x = msg.x
+        self._turtle_y = msg.y
+        self._turtle_theta = msg.theta
 
     def _image_callback(self, msg):
         try:
-            cv_image = self.bridge.imgmsg_to_cv2(msg, "bgr8")
+            cv_image = self._bridge.imgmsg_to_cv2(msg, "bgr8")
 
             lower_red = np.array([0, 0, 200])
             upper_red = np.array([50, 50, 255])
@@ -56,12 +56,12 @@ class BallTracker(Node):
                 ball_pixel_x = int(M["m10"] / M["m00"])
                 ball_pixel_y = int(M["m01"] / M["m00"])
 
-                self.target_x, self.target_y = pixels_to_turtlesim(
+                self._target_x, self._target_y = pixels_to_turtlesim(
                     ball_pixel_x, ball_pixel_y
                 )
 
                 self.get_logger().info(
-                    f"target -> X: {self.target_x:.2f}m, Y: {self.target_y:.2f}m"
+                    f"target -> X: {self._target_x:.2f}m, Y: {self._target_y:.2f}m"
                 )
             else:
                 self.get_logger().info("no ball in frame..")
