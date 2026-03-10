@@ -44,6 +44,9 @@ class TurtleController(Node):
 
         if distance < 0.1:
             self._cmd_vel_publisher.publish(Twist())
+            self.get_logger().info(
+                f"Target reached: X={self._target_point.x:.2f}, Y={self._target_point.y:.2f}"
+            )
             return
 
         angle_to_target = math.atan2(dy, dx)
