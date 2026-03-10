@@ -26,7 +26,9 @@ jobs:
           pip3 install -r requirements.txt
 
       - name: run pre-commit
-        run: pre-commit run --all-files
+        run: |
+          pre-commit install
+          pre-commit run --all-files
 
       - name: build and test
         run: |
