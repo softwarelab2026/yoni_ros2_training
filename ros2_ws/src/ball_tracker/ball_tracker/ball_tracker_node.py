@@ -27,11 +27,13 @@ class BallTracker(Node):
             upper_red = np.array([50, 50, 255])
             red_mask = cv2.inRange(cv_image, lower_red, upper_red)
 
+            # use moments to find the 'center of mass' of the red pixels
             M = cv2.moments(red_mask)
             if M["m00"] > 0:
                 ball_pixel_x = int(M["m10"] / M["m00"])
                 ball_pixel_y = int(M["m01"] / M["m00"])
 
+                # convert from camera pixels to turtlesim coordinates
                 target_x, target_y = pixels_to_turtlesim(ball_pixel_x, ball_pixel_y)
 
                 target_msg = Point()
