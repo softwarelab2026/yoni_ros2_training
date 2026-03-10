@@ -34,7 +34,6 @@ jobs:
       - name: build and run tests
         run: |
           cd ros2_ws
-          . /opt/ros/humble/setup.sh
-          colcon build --symlink-install
-          . install/setup.sh
-          pytest tests/ -v
+          colcon build
+          pip install -r ../requirements.txt
+          pytest tests/

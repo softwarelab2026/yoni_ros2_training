@@ -8,20 +8,22 @@ class PIDController:
         self.integral_sum = 0.0
         self.previous_error = 0.0
 
-    def compute(self, current_error):
+    def _clamp(self, value, limit):
+        return max(min(value, limit), -limit)
+
+    def compute(self, setpoint, measured_value, dt=0.1):
+        current_error = setpoint - measured_value
+
         p_term = self.kp * current_error
 
-        self.integral_sum += current_error
-        self.integral_sum = max(min(self.integral_sum, 10.0), -10.0)
+        self.integral_sum += current_error * dt
+        self.integral_sum = self._clamp(self.integral_sum, self.max_output)
         i_term = self.ki * self.integral_sum
 
-        derivative = current_error - self.previous_error
+        derivative = (current_error - self.previous_error) / dt
         d_term = self.kd * derivative
 
         self.previous_error = current_error
 
         total_output = p_term + i_term + d_term
-
-        final_output = max(min(total_output, self.max_output), -self.max_output)
-
-        return final_output
+        return self._clamp(total_output, self.max_output)

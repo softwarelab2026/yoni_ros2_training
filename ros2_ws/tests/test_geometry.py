@@ -1,4 +1,4 @@
-from ros2_ws.build.ball_tracker.ball_tracker.geometry import pixels_to_turtlesim
+from src.ball_tracker.ball_tracker.geometry import pixels_to_turtlesim
 
 
 def test_pixels_to_turtlesim_top_left():
