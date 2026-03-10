@@ -1,0 +1,55 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run pre-commits, tests and pylint",
+            "type": "shell",
+            "command": "pre-commit run --all-files && pylint --rcfile=.pylintrc ros2_ws/src/ball_tracker/ball_tracker/ && python3 -m pytest ros2_ws/tests/ -v",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Clean and Build ROS2 Workspace",
+            "type": "shell",
+            "command": "rm -rf build install log && colcon build --symlink-install",
+            "options": {
+                "cwd": "${workspaceFolder}/ros2_ws"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Launch Ball Tracker System",
+            "type": "shell",
+            "command": "source /opt/ros/humble/setup.bash && source install/setup.bash && ros2 launch ball_tracker tracker.launch.py",
+            "options": {
+                "cwd": "${workspaceFolder}/ros2_ws",
+                "shell": {
+                    "executable": "/bin/bash",
+                    "args": ["-c"]
+                }
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "clear": true
+            },
+            "problemMatcher": []
+        }
+    ]
+}

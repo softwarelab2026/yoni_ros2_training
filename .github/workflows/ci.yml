@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  ros-ci:
+    runs-on: ubuntu-latest
+    container:
+      image: osrf/ros:humble-desktop
+
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
+
+      - name: configure git safe directory
+        run: |
+          git config --global --add safe.directory /__w/yoni_ros2_training/yoni_ros2_training
+
+      - name: install dependencies
+        run: |
+          apt-get update
+          apt-get install -y python3-pip git
+          pip3 install -r requirements.txt
+
+      - name: run pre-commit
+        run: pre-commit run --all-files
+
+      - name: run pylint
+        run: |
+          pylint --rcfile=.pylintrc ros2_ws/src/ball_tracker/ball_tracker/
+
+      - name: build and run tests
+        run: |
+          cd ros2_ws
+          colcon build
+          pip3 install -r ../requirements.txt
+          python3 -m pytest tests/

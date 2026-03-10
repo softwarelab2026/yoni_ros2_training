@@ -14,7 +14,3 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN pip install -U \
     setuptools \
     colcon-common-extensions
-
-RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
-
-CMD ["bash"]

@@ -1,29 +1,36 @@
+import os
+from glob import glob
 from setuptools import find_packages, setup
 
-package_name = 'ball_tracker'
+package_name = "ball_tracker"
 
 setup(
     name=package_name,
-    version='0.0.0',
-    packages=find_packages(exclude=['test']),
+    version="0.0.0",
+    packages=find_packages(exclude=["test"]),
     data_files=[
-        ('share/ament_index/resource_index/packages',
-            ['resource/' + package_name]),
-        ('share/' + package_name, ['package.xml']),
+        ("share/ament_index/resource_index/packages", ["resource/" + package_name]),
+        ("share/" + package_name, ["package.xml"]),
+        (
+            os.path.join("share", package_name, "launch"),
+            glob(os.path.join("launch", "*launch.[pxy][yma]*")),
+        ),
     ],
-    install_requires=['setuptools'],
+    install_requires=["setuptools==58.2.0", "numpy<2.0.0", "rclpy"],
     zip_safe=True,
-    maintainer='root',
-    maintainer_email='yonatanchiel@gmail.com',
-    description='TODO: Package description',
-    license='TODO: License declaration',
+    maintainer="root",
+    maintainer_email="yonatanchiel@gmail.com",
+    description="TODO: Package description",
+    license="TODO: License declaration",
     extras_require={
-        'test': [
-            'pytest',
+        "test": [
+            "pytest",
         ],
     },
     entry_points={
-        'console_scripts': [
+        "console_scripts": [
+            "ball_tracker_node = ball_tracker.ball_tracker_node:main",
+            "virtual_camera_node = ball_tracker.virtual_camera_node:main",
         ],
     },
 )

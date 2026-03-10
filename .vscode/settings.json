@@ -1,0 +1,7 @@
+{
+    "python.testing.pytestArgs": [
+        "ros2_ws/tests"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
+}
