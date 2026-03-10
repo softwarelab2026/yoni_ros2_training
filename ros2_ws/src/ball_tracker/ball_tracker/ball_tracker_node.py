@@ -13,9 +13,9 @@ class BallTracker(Node):
     def __init__(self):
         super().__init__("ball_tracker_node")
 
-        self._publisher = self.create_publisher(Twist, "/turtle1/cmd_vel", 10)
+        self._cmd_vel_publisher = self.create_publisher(Twist, "/turtle1/cmd_vel", 10)
 
-        self._subcription = self.create_subscription(
+        self._image_subscriber = self.create_subscription(
             Image, "/camera/image_raw", self._image_callback, 10
         )
 
