@@ -7,6 +7,8 @@ on:
 jobs:
   lint-and-test:
     runs-on: ubuntu-latest
+    container:
+      image: osrf/ros:humble-desktop
 
     steps:
       - name: checkout repository
@@ -25,7 +27,10 @@ jobs:
       - name: run pre-commit
         run: pre-commit run --all-files
 
-      - name: run tests
+      - name: build and test
         run: |
-          export PYTHONPATH=$PYTHONPATH:$(pwd)/ros2_ws/src/ball_tracker
-          pytest ros2_ws/tests/test_pid.py -v
+          cd ros2_ws
+          . /opt/ros/humble/setup.sh
+          colcon build --symlink-install
+          . install/setup.sh
+          pytest tests/ -v
