@@ -19,8 +19,8 @@ class TurtleController(Node):
             Point, "/target_point", self._target_callback, 10
         )
 
-        self._linear_pid = PIDController(kp=50.0, ki=0.0, kd=0.0, max_output=10.0)
-        self._angular_pid = PIDController(kp=100.0, ki=0.0, kd=0.0, max_output=10.0)
+        self._linear_pid = PIDController(kp=5.0, ki=0.0, kd=0.0, max_output=10.0)
+        self._angular_pid = PIDController(kp=5.0, ki=0.0, kd=0.0, max_output=10.0)
 
         self._turtle_pose = None
         self._target_point = None
