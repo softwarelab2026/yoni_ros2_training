@@ -35,6 +35,9 @@ class VirtualCamera(Node):
 
         cv2.circle(frame, (self.x, self.y), self.radius, (0, 0, 255), -1)
 
+        cv2.imshow("Virtual Camera Feed", frame)
+        cv2.waitKey(1)
+
         msg = self.br.cv2_to_imgmsg(frame, encoding="bgr8")
         self.publisher_.publish(msg)
 
