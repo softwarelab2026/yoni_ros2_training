@@ -1,6 +1,7 @@
 cv_bridge
 opencv-python
 setuptools==58.2.0
+packaging==21.3
 numpy<2.0.0
 pytest
 pre-commit
