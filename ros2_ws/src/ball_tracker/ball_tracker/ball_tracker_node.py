@@ -28,8 +28,6 @@ class BallTracker(Node):
         self.turtle_theta = 0.0
 
         self.bridge = CvBridge()
-        self.ball_pixel_x = 0.0
-        self.ball_pixel_y = 0.0
 
         self.target_x = 0.0
         self.target_y = 0.0
@@ -55,11 +53,11 @@ class BallTracker(Node):
 
             M = cv2.moments(red_mask)
             if M["m00"] > 0:
-                self.ball_pixel_x = int(M["m10"] / M["m00"])
-                self.ball_pixel_y = int(M["m01"] / M["m00"])
+                ball_pixel_x = int(M["m10"] / M["m00"])
+                ball_pixel_y = int(M["m01"] / M["m00"])
 
                 self.target_x, self.target_y = pixels_to_turtlesim(
-                    self.ball_pixel_x, self.ball_pixel_y
+                    ball_pixel_x, ball_pixel_y
                 )
 
                 self.get_logger().info(
