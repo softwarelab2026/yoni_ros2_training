@@ -1,5 +1,6 @@
 import os
 from glob import glob
+
 from setuptools import find_packages, setup
 
 package_name = "ball_tracker"
@@ -31,6 +32,7 @@ setup(
         "console_scripts": [
             "ball_tracker_node = ball_tracker.ball_tracker_node:main",
             "virtual_camera_node = ball_tracker.virtual_camera_node:main",
+            "turtle_controller_node = ball_tracker.turtle_controller_node:main",
         ],
     },
 )

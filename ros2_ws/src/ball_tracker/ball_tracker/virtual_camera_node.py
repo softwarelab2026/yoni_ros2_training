@@ -1,9 +1,9 @@
-import rclpy
-from rclpy.node import Node
-from sensor_msgs.msg import Image
-from cv_bridge import CvBridge
 import cv2
 import numpy as np
+import rclpy
+from cv_bridge import CvBridge
+from rclpy.node import Node
+from sensor_msgs.msg import Image
 
 
 class VirtualCamera(Node):
@@ -34,6 +34,9 @@ class VirtualCamera(Node):
             self.dy *= -1
 
         cv2.circle(frame, (self.x, self.y), self.radius, (0, 0, 255), -1)
+
+        cv2.imshow("Virtual Camera Feed", frame)
+        cv2.waitKey(1)
 
         msg = self.br.cv2_to_imgmsg(frame, encoding="bgr8")
         self.publisher_.publish(msg)

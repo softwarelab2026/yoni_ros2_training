@@ -4,7 +4,7 @@
         {
             "label": "Run pre-commits, tests and pylint",
             "type": "shell",
-            "command": "pre-commit run --all-files && pylint --rcfile=.pylintrc ros2_ws/src/ball_tracker/ball_tracker/ && python3 -m pytest ros2_ws/tests/ -v",
+            "command": "pre-commit run --all-files && pylint ros2_ws/src/ball_tracker/ball_tracker/ && python3 -m pytest ros2_ws/tests/ -v",
             "group": {
                 "kind": "test",
                 "isDefault": true
@@ -16,27 +16,9 @@
             "problemMatcher": []
         },
         {
-            "label": "Clean and Build ROS2 Workspace",
+            "label": "Clean, Build and Launch System",
             "type": "shell",
-            "command": "rm -rf build install log && colcon build --symlink-install",
-            "options": {
-                "cwd": "${workspaceFolder}/ros2_ws"
-            },
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "presentation": {
-                "reveal": "always",
-                "panel": "shared",
-                "clear": true
-            },
-            "problemMatcher": []
-        },
-        {
-            "label": "Launch Ball Tracker System",
-            "type": "shell",
-            "command": "source /opt/ros/humble/setup.bash && source install/setup.bash && ros2 launch ball_tracker tracker.launch.py",
+            "command": "rm -rf build install log && colcon build --symlink-install && source /opt/ros/humble/setup.bash && source install/setup.bash && ros2 launch ball_tracker ${input:launchFile}",
             "options": {
                 "cwd": "${workspaceFolder}/ros2_ws",
                 "shell": {
@@ -44,12 +26,34 @@
                     "args": ["-c"]
                 }
             },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
             "presentation": {
                 "reveal": "always",
                 "panel": "new",
                 "clear": true
             },
             "problemMatcher": []
+        }
+    ],
+    "inputs": [
+        {
+            "id": "launchFile",
+            "type": "pickString",
+            "description": "Which launch file would you like to run?",
+            "options": [
+                {
+                    "label": "PID Tuning (Manual mode via rqt)",
+                    "value": "pid_tuning.launch.py"
+                },
+                {
+                    "label": "Ball Tracking (Automatic mode via Camera)",
+                    "value": "ball_tracker.launch.py"
+                }
+            ],
+            "default": "pid_tuning.launch.py"
         }
     ]
 }
