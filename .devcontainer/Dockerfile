@@ -2,8 +2,7 @@ FROM osrf/ros:humble-desktop
 
 RUN apt-get update && apt-get install -y \
     python3-pip \
-    ros-humble-turtlesim \
-    && rm -rf /var/lib/apt/lists/*
+    ros-humble-turtlesim
 
 WORKDIR /workspace
 
