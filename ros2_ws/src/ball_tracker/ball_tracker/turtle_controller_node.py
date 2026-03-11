@@ -1,10 +1,9 @@
-import math
-
 import rclpy
 from geometry_msgs.msg import Point, Twist
 from rclpy.node import Node
 from turtlesim.msg import Pose
 
+from ball_tracker.geometry import calculate_angle_error, calculate_distance
 from ball_tracker.pid_controller import PIDController
 
 
@@ -36,18 +35,21 @@ class TurtleController(Node):
         if self._turtle_pose is None or self._target_point is None:
             return
 
-        dx = self._target_point.x - self._turtle_pose.x
-        dy = self._target_point.y - self._turtle_pose.y
-        distance = math.sqrt(dx**2 + dy**2)
+        distance = calculate_distance(
+            self._turtle_pose.x, self._turtle_pose.y, self._target_point.x, self._target_point.y
+        )
 
         if distance < 0.1:
             self._cmd_vel_publisher.publish(Twist())
-            self.get_logger().info(f"Target reached: X={self._target_point.x:.2f}, Y={self._target_point.y:.2f}")
             return
 
-        angle_to_target = math.atan2(dy, dx)
-        angle_error = angle_to_target - self._turtle_pose.theta
-        angle_error = math.atan2(math.sin(angle_error), math.cos(angle_error))
+        angle_error = calculate_angle_error(
+            self._turtle_pose.theta,
+            self._turtle_pose.x,
+            self._turtle_pose.y,
+            self._target_point.x,
+            self._target_point.y,
+        )
 
         angular_vel = self._angular_pid.compute(setpoint=0.0, measured_value=-angle_error, dt=0.1)
         linear_vel = self._linear_pid.compute(setpoint=0.0, measured_value=-distance, dt=0.1)
